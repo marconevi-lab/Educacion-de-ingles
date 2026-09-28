@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#51386a">
+  <title>Modo docente · Inglés</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #292431;
+      background: #f7f3fb;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 8% 6%, #e9dcff 0, transparent 24rem),
+        linear-gradient(180deg, #fbf9ff, #f5f1f9);
+    }
+
+    .contenedor { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+
+    header { position: relative; padding: 40px 0 26px; }
+
+    .logo-github {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #d7c8e7;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px #39264e12;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    .logo-github:hover { transform: translateY(-2px); background: #f1eafa; }
+    .logo-github:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    .logo-elegir { right: 116px; }
+    .logo-issue { right: 58px; }
+
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid #d7c8e7;
+      border-radius: 999px;
+      background: #fff;
+      color: #604777;
+      font-size: .85rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 16px 0 8px; color: #39264e; font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.05; }
+    header p { max-width: 680px; margin: 0; color: #625b6c; font-size: 1.08rem; line-height: 1.6; }
+
+    .controles {
+      position: sticky;
+      z-index: 2;
+      top: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 12px;
+      margin: 4px 0 24px;
+      padding: 14px;
+      border: 1px solid #e2d9eb;
+      border-radius: 18px;
+      background: #fffffff2;
+      box-shadow: 0 8px 24px #39264e12;
+      backdrop-filter: blur(10px);
+    }
+
+    .selector { display: grid; gap: 5px; min-width: 190px; }
+    label { color: #51495d; font-size: .9rem; font-weight: 750; }
+
+    select, button, input { font: inherit; }
+
+    select {
+      min-height: 44px;
+      padding: 9px 38px 9px 12px;
+      border: 1px solid #cfc4da;
+      border-radius: 11px;
+      background: white;
+      color: #302a38;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 11px;
+      background: #604777;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    button:hover { transform: translateY(-1px); background: #4c3562; }
+    button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
+    .resumen {
+      margin-left: auto;
+      align-self: center;
+      color: #625b6c;
+      font-size: .95rem;
+      font-weight: 700;
+    }
+
+    .continuar { background: #23745a; }
+    .continuar:hover { background: #195b45; }
+    .aviso-guardado { width: 100%; margin: 0; color: #5b6970; font-size: .84rem; font-weight: 650; }
+
+    #ejercicios { display: grid; gap: 20px; padding-bottom: 48px; }
+
+    .grupo {
+      overflow: hidden;
+      border: 1px solid #e5ddec;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 8px 24px #39264e0b;
+    }
+
+    .grupo h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      padding: 17px 20px;
+      background: #f1eafa;
+      color: #46315c;
+      font-size: 1.25rem;
+    }
+
+    .grupo h2 span { font-size: 1.35rem; }
+    .grupo ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 26px; margin: 0; padding: 8px 24px 18px 52px; }
+    .grupo li { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 12px 4px; border-bottom: 1px dashed #ece7f1; font-size: 1.08rem; }
+    .enunciado { flex: 1; min-width: 0; }
+
+    .respuesta {
+      width: 140px;
+      min-height: 40px;
+      padding: 6px 8px;
+      border: 2px solid #d7cfdf;
+      border-radius: 9px;
+      background: #fff;
+      color: #292431;
+      font: inherit;
+      text-align: center;
+    }
+
+    .respuesta:focus { border-color: #80619c; outline: 3px solid #aa8ac833; }
+    .resultado { min-width: 1.2em; font-size: 1.35rem; font-weight: 900; line-height: 1; }
+    .resultado.correcta { color: #168348; }
+    .resultado.incorrecta { color: #c92b3d; }
+
+    .solucion {
+      display: inline-block;
+      margin-left: 8px;
+      color: #21734a;
+      font-weight: 850;
+    }
+
+    .solucion[hidden] { display: none; }
+
+    dialog {
+      width: min(420px, calc(100% - 28px));
+      padding: 0;
+      border: 1px solid #ddd2e8;
+      border-radius: 20px;
+      box-shadow: 0 24px 80px #20172b55;
+    }
+
+    dialog::backdrop { background: #25183188; backdrop-filter: blur(3px); }
+    .dialogo-cuerpo { padding: 24px; }
+    .dialogo-cuerpo h2 { margin: 0 0 7px; color: #39264e; }
+    .dialogo-cuerpo p { margin: 0 0 18px; color: #625b6c; line-height: 1.5; }
+    .dialogo-cuerpo form { display: grid; gap: 12px; }
+    .dialogo-cuerpo input { min-height: 45px; padding: 10px 12px; border: 1px solid #cfc4da; border-radius: 10px; }
+    .acciones-dialogo { display: flex; justify-content: end; gap: 8px; }
+    .secundario { background: #eee8f4; color: #40334e; }
+    .secundario:hover { background: #e2d8ec; }
+    #error-clave { min-height: 1.4em; margin: 0; color: #a32939; font-weight: 700; }
+
+    .enlace-pista {
+      justify-self: start;
+      min-height: auto;
+      padding: 2px 0;
+      border: 0;
+      background: none;
+      color: #604777;
+      font-size: .85rem;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .enlace-pista:hover { color: #4c3562; }
+    .pista-clave { margin: -6px 0 0; color: #51495d; font-size: .85rem; line-height: 1.4; }
+    .pista-clave[hidden] { display: none; }
+
+    footer { padding: 0 0 28px; color: #756d7e; font-size: .88rem; text-align: center; }
+
+    @media (max-width: 620px) {
+      .controles { position: static; align-items: stretch; }
+      .selector { flex: 1 1 100%; }
+      .resumen { flex: 1 1 100%; margin: 0; }
+      .grupo ol { grid-template-columns: 1fr; }
+      header { padding-top: 28px; }
+    }
+
+    @media print {
+      body { background: white; }
+      .contenedor { width: 100%; }
+      header { padding: 0 0 14px; }
+      .controles, dialog, footer, .logo-github, .logo-elegir, .logo-issue { display: none !important; }
+      .grupo { break-inside: avoid; box-shadow: none; }
+      .grupo ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .solucion[hidden] { display: none !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="contenedor">
+    <a href="https://marconevi-lab.github.io/Educacion-de-matematicas/inicio.html" class="logo-github logo-elegir" title="Elegir otra asignatura o curso" aria-label="Elegir otra asignatura o curso">➕</a>
+    <a href="https://github.com/marconevi-lab/Educacion-de-ingles" target="_blank" rel="noopener" class="logo-github" title="Ver el repositorio en GitHub" aria-label="Ver el repositorio en GitHub">📐</a>
+    <a href="https://github.com/marconevi-lab/Educacion-de-ingles/issues/new" target="_blank" rel="noopener" class="logo-github logo-issue" title="Reportar un problema" aria-label="Reportar un problema">🐛</a>
+    <span class="etiqueta">🧑‍🏫 Modo docente · 4.º de Primaria</span>
+    <h1>Reto de inglés</h1>
+    <p>50 ejercicios para practicar vocabulario, números, el verbo "to be" y los plurales. Elige un nivel y ponte a calcular; las soluciones están reservadas para el profesorado.</p>
+  </header>
+
+  <main class="contenedor">
+    <section class="controles" aria-label="Controles de los ejercicios">
+      <div class="selector">
+        <label for="dificultad">Elige la dificultad</label>
+        <select id="dificultad">
+          <option value="facil">Fácil</option>
+          <option value="medio" selected>Medio</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </div>
+      <button id="nuevos" type="button">🔄 Crear otros ejercicios</button>
+      <button id="continuar-sin-clave" class="continuar" type="button">▶️ Continuar mis ejercicios</button>
+      <button id="ver-soluciones" type="button">🔒 Mostrar soluciones</button>
+      <span id="resumen" class="resumen" aria-live="polite">50 ejercicios · Nivel medio</span>
+      <p class="aviso-guardado">Continuar mis ejercicios no pide contraseña y guarda automáticamente tus respuestas en este navegador.</p>
+    </section>
+
+    <div id="ejercicios" aria-live="polite"></div>
+  </main>
+
+  <footer class="contenedor">Consejo: lee cada frase en voz alta antes de responder.</footer>
+
+  <dialog id="dialogo-clave" aria-labelledby="titulo-clave">
+    <div class="dialogo-cuerpo">
+      <h2 id="titulo-clave">Acceso docente</h2>
+      <p>Introduce la contraseña para mostrar las soluciones.</p>
+      <form id="formulario-clave">
+        <label for="clave-docente">Contraseña</label>
+        <input id="clave-docente" type="password" autocomplete="current-password" required>
+        <p id="error-clave" role="status" aria-live="polite"></p>
+        <button type="button" id="olvide-clave" class="enlace-pista">¿Olvidaste la clave?</button>
+        <p id="pista-clave" class="pista-clave" hidden>Pista: lo que pagas cada mes si vives en un piso que no es tuyo.</p>
+        <div class="acciones-dialogo">
+          <button class="secundario" id="cancelar-clave" type="button">Cancelar</button>
+          <button type="submit">Desbloquear</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    // Cambia esta clave si quieres utilizar otra en tu actividad.
+    const CLAVE_DOCENTE = "Alquiler";
+
+    const grupos = [
+      { id: "vocabulario", titulo: "Vocabulario", icono: "🔤", cantidad: 10 },
+      { id: "numeros", titulo: "Números en letras", icono: "🔢", cantidad: 10 },
+      { id: "verboToBe", titulo: 'Verbo "to be"', icono: "💬", cantidad: 20 },
+      { id: "plurales", titulo: "Plurales", icono: "📚", cantidad: 10 }
+    ];
+
+    const vocabularioPorNivel = {
+      facil: [
+        ["casa", "house"], ["perro", "dog"], ["gato", "cat"], ["sol", "sun"], ["agua", "water"],
+        ["libro", "book"], ["mesa", "table"], ["silla", "chair"], ["mano", "hand"], ["ojo", "eye"],
+        ["pie", "foot"], ["niño", "boy"], ["niña", "girl"], ["madre", "mother"], ["padre", "father"]
+      ],
+      medio: [
+        ["colegio", "school"], ["profesor", "teacher"], ["ventana", "window"], ["puerta", "door"], ["cocina", "kitchen"],
+        ["jardín", "garden"], ["ciudad", "city"], ["semana", "week"], ["mañana", "morning"], ["noche", "night"],
+        ["amigo", "friend"], ["hermano", "brother"], ["hermana", "sister"], ["abuelo", "grandfather"], ["abuela", "grandmother"]
+      ],
+      dificil: [
+        ["biblioteca", "library"], ["desayuno", "breakfast"], ["cumpleaños", "birthday"], ["primavera", "spring"], ["verano", "summer"],
+        ["otoño", "autumn"], ["invierno", "winter"], ["granja", "farm"], ["bosque", "forest"], ["río", "river"],
+        ["montaña", "mountain"], ["periódico", "newspaper"], ["paraguas", "umbrella"], ["cocinero", "cook"], ["vecino", "neighbour"]
+      ]
+    };
+
+    const pluralesPorNivel = {
+      facil: [
+        ["cat", "cats"], ["dog", "dogs"], ["book", "books"], ["table", "tables"], ["chair", "chairs"],
+        ["apple", "apples"], ["pen", "pens"], ["box", "boxes"], ["bus", "buses"], ["dish", "dishes"]
+      ],
+      medio: [
+        ["city", "cities"], ["baby", "babies"], ["family", "families"], ["country", "countries"], ["party", "parties"],
+        ["lady", "ladies"], ["story", "stories"], ["fly", "flies"], ["day", "days"], ["toy", "toys"]
+      ],
+      dificil: [
+        ["child", "children"], ["man", "men"], ["woman", "women"], ["foot", "feet"], ["tooth", "teeth"],
+        ["mouse", "mice"], ["person", "people"], ["fish", "fish"], ["sheep", "sheep"], ["goose", "geese"]
+      ]
+    };
+
+    const sujetosVerboToBe = {
+      facil: [
+        ["I", "am"], ["You", "are"], ["He", "is"], ["She", "is"], ["It", "is"], ["We", "are"], ["They", "are"]
+      ],
+      medio: [
+        ["I", "am"], ["You", "are"], ["He", "is"], ["She", "is"], ["It", "is"], ["We", "are"], ["They", "are"],
+        ["Ana", "is"], ["Tom", "is"], ["My mother", "is"], ["My father", "is"], ["The teacher", "is"]
+      ],
+      dificil: [
+        ["I", "am"], ["You", "are"], ["He", "is"], ["She", "is"], ["It", "is"], ["We", "are"], ["They", "are"],
+        ["Ana", "is"], ["Tom", "is"], ["Ana and Tom", "are"], ["The students", "are"], ["My parents", "are"],
+        ["The dogs", "are"], ["You and I", "are"]
+      ]
+    };
+
+    const complementosVerboToBe = [
+      "happy", "sad", "tall", "short", "hungry", "thirsty", "a teacher", "a student",
+      "funny", "nice", "at home", "in the garden", "ten years old", "from Spain"
+    ];
+
+    const unidades = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+      "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    const decenas = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+
+    function numeroEnPalabras(numero) {
+      if (numero === 100) return "one hundred";
+      if (numero < 20) return unidades[numero];
+      if (numero % 10 === 0) return decenas[Math.floor(numero / 10)];
+      return `${decenas[Math.floor(numero / 10)]}-${unidades[numero % 10]}`;
+    }
+
+    const rangoNumerosPorNivel = {
+      facil: [1, 10],
+      medio: [11, 50],
+      dificil: [51, 100]
+    };
+
+    const dificultad = document.querySelector("#dificultad");
+    const listaEjercicios = document.querySelector("#ejercicios");
+    const resumen = document.querySelector("#resumen");
+    const botonSoluciones = document.querySelector("#ver-soluciones");
+    const botonContinuar = document.querySelector("#continuar-sin-clave");
+    const dialogoClave = document.querySelector("#dialogo-clave");
+    const formularioClave = document.querySelector("#formulario-clave");
+    const campoClave = document.querySelector("#clave-docente");
+    const errorClave = document.querySelector("#error-clave");
+    const botonOlvideClave = document.querySelector("#olvide-clave");
+    const pistaClave = document.querySelector("#pista-clave");
+    let mostrarSoluciones = false;
+    let accesoDocente = false;
+    const CLAVE_PROGRESO = "ingles-progreso-v1";
+    let ejerciciosActuales = null;
+    let respuestasGuardadas = {};
+
+    function aleatorio(minimo, maximo) {
+      return Math.floor(Math.random() * (maximo - minimo + 1)) + minimo;
+    }
+
+    function elegirAlAzar(lista) {
+      return lista[aleatorio(0, lista.length - 1)];
+    }
+
+    function crearEjercicios(nivel) {
+      const ejercicios = { vocabulario: [], numeros: [], verboToBe: [], plurales: [] };
+
+      for (let i = 0; i < 10; i++) {
+        const [espanol, ingles] = elegirAlAzar(vocabularioPorNivel[nivel]);
+        ejercicios.vocabulario.push({ texto: `Traduce: "${espanol}"`, respuesta: ingles });
+
+        const [singular, plural] = elegirAlAzar(pluralesPorNivel[nivel]);
+        ejercicios.plurales.push({ texto: `Escribe el plural de "${singular}"`, respuesta: plural });
+      }
+
+      const [minNumero, maxNumero] = rangoNumerosPorNivel[nivel];
+      for (let i = 0; i < 10; i++) {
+        const numero = aleatorio(minNumero, maxNumero);
+        ejercicios.numeros.push({ texto: `Escribe en letras: ${numero}`, respuesta: numeroEnPalabras(numero) });
+      }
+
+      for (let i = 0; i < 20; i++) {
+        const [sujeto, verbo] = elegirAlAzar(sujetosVerboToBe[nivel]);
+        const complemento = elegirAlAzar(complementosVerboToBe);
+        ejercicios.verboToBe.push({ texto: `Completa: "${sujeto} ___ ${complemento}."`, respuesta: verbo });
+      }
+
+      return ejercicios;
+    }
+
+    function guardarProgreso() {
+      try {
+        localStorage.setItem(CLAVE_PROGRESO, JSON.stringify({
+          nivel: dificultad.value,
+          ejercicios: ejerciciosActuales,
+          respuestas: respuestasGuardadas
+        }));
+      } catch {
+        // Si el navegador bloquea el almacenamiento, los ejercicios siguen funcionando.
+      }
+    }
+
+    function recuperarProgreso() {
+      try {
+        const progreso = JSON.parse(localStorage.getItem(CLAVE_PROGRESO));
+        if (progreso && progreso.ejercicios && progreso.respuestas) return progreso;
+      } catch {
+        // No hay un progreso válido guardado todavía.
+      }
+      return null;
+    }
+
+    function pintarEjercicios() {
+      const nivel = dificultad.value;
+      const ejercicios = ejerciciosActuales || crearEjercicios(nivel);
+      ejerciciosActuales = ejercicios;
+      mostrarSoluciones = accesoDocente;
+      listaEjercicios.replaceChildren();
+      let numero = 1;
+
+      for (const grupo of grupos) {
+        const seccion = document.createElement("section");
+        seccion.className = "grupo";
+
+        const titulo = document.createElement("h2");
+        titulo.innerHTML = `<span aria-hidden="true">${grupo.icono}</span>${grupo.titulo} <small>(${grupo.cantidad})</small>`;
+        seccion.append(titulo);
+
+        const lista = document.createElement("ol");
+        ejercicios[grupo.id].forEach((ejercicio, indice) => {
+          const idEjercicio = `${grupo.id}-${indice}`;
+          const elemento = document.createElement("li");
+          const enunciado = document.createElement("span");
+          enunciado.className = "enunciado";
+          enunciado.textContent = ejercicio.texto;
+
+          const entrada = document.createElement("input");
+          entrada.className = "respuesta";
+          entrada.type = "text";
+          entrada.autocomplete = "off";
+          entrada.autocapitalize = "off";
+          entrada.spellcheck = false;
+          entrada.maxLength = 30;
+          entrada.setAttribute("aria-label", `Respuesta del ejercicio ${numero}`);
+          entrada.value = respuestasGuardadas[idEjercicio] || "";
+
+          const resultado = document.createElement("span");
+          resultado.className = "resultado";
+          resultado.setAttribute("role", "status");
+          resultado.setAttribute("aria-live", "polite");
+
+          function comprobarRespuesta() {
+            if (entrada.value.trim() === "") {
+              resultado.textContent = "";
+              resultado.className = "resultado";
+              resultado.removeAttribute("aria-label");
+              return;
+            }
+            const esCorrecta = entrada.value.trim().toLowerCase() === ejercicio.respuesta.toLowerCase();
+            resultado.textContent = esCorrecta ? "✓" : "✗";
+            resultado.className = `resultado ${esCorrecta ? "correcta" : "incorrecta"}`;
+            resultado.setAttribute("aria-label", esCorrecta ? "Correcto" : "Incorrecto");
+          }
+
+          entrada.addEventListener("input", () => {
+            respuestasGuardadas[idEjercicio] = entrada.value;
+            guardarProgreso();
+            comprobarRespuesta();
+          });
+
+          entrada.addEventListener("change", () => {
+            comprobarRespuesta();
+          });
+
+          entrada.addEventListener("keydown", (evento) => {
+            if (evento.key === "Enter") {
+              evento.preventDefault();
+              entrada.blur();
+            }
+          });
+
+          const solucion = document.createElement("span");
+          solucion.className = "solucion";
+          solucion.textContent = ejercicio.respuesta;
+          solucion.hidden = !mostrarSoluciones;
+          solucion.setAttribute("aria-label", `respuesta del ejercicio ${numero}`);
+
+          elemento.append(enunciado, entrada, resultado, solucion);
+          lista.append(elemento);
+          comprobarRespuesta();
+          numero++;
+        });
+
+        seccion.append(lista);
+        listaEjercicios.append(seccion);
+      }
+
+      const nombreNivel = dificultad.options[dificultad.selectedIndex].text.toLowerCase();
+      resumen.textContent = `50 ejercicios · Nivel ${nombreNivel}`;
+      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Mostrar soluciones";
+    }
+
+    function crearOtrosEjercicios() {
+      ejerciciosActuales = crearEjercicios(dificultad.value);
+      respuestasGuardadas = {};
+      accesoDocente = false;
+      guardarProgreso();
+      pintarEjercicios();
+    }
+
+    dificultad.addEventListener("change", crearOtrosEjercicios);
+    document.querySelector("#nuevos").addEventListener("click", crearOtrosEjercicios);
+
+    botonContinuar.addEventListener("click", () => {
+      const progreso = recuperarProgreso();
+      if (progreso) {
+        dificultad.value = progreso.nivel || dificultad.value;
+        ejerciciosActuales = progreso.ejercicios;
+        respuestasGuardadas = progreso.respuestas;
+      } else {
+        ejerciciosActuales = crearEjercicios(dificultad.value);
+        respuestasGuardadas = {};
+        guardarProgreso();
+      }
+      accesoDocente = false;
+      mostrarSoluciones = false;
+      pintarEjercicios();
+      listaEjercicios.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    botonSoluciones.addEventListener("click", () => {
+      if (!accesoDocente) {
+        errorClave.textContent = "";
+        campoClave.value = "";
+        pistaClave.hidden = true;
+        dialogoClave.showModal();
+        campoClave.focus();
+        return;
+      }
+
+      mostrarSoluciones = !mostrarSoluciones;
+      document.querySelectorAll(".solucion").forEach((solucion) => {
+        solucion.hidden = !mostrarSoluciones;
+      });
+      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Mostrar soluciones";
+      if (!mostrarSoluciones) accesoDocente = false;
+    });
+
+    formularioClave.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      if (campoClave.value === CLAVE_DOCENTE) {
+        accesoDocente = true;
+        mostrarSoluciones = true;
+        dialogoClave.close();
+        pintarEjercicios();
+      } else {
+        errorClave.textContent = "Contraseña incorrecta. Prueba otra vez.";
+        campoClave.select();
+      }
+    });
+
+    document.querySelector("#cancelar-clave").addEventListener("click", () => dialogoClave.close());
+
+    botonOlvideClave.addEventListener("click", () => {
+      pistaClave.hidden = !pistaClave.hidden;
+    });
+
+    const progresoInicial = recuperarProgreso();
+    if (progresoInicial) {
+      dificultad.value = progresoInicial.nivel || dificultad.value;
+      ejerciciosActuales = progresoInicial.ejercicios;
+      respuestasGuardadas = progresoInicial.respuestas;
+    }
+    pintarEjercicios();
+  </script>
+</body>
+</html>
