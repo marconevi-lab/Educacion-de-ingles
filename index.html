@@ -149,9 +149,23 @@
     }
 
     .grupo h2 span { font-size: 1.35rem; }
+    .contador-grupo { margin-left: auto; color: #7a6f8a; font-size: .82rem; font-weight: 700; text-transform: none; letter-spacing: normal; }
     .grupo ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 26px; margin: 0; padding: 8px 24px 18px 52px; }
     .grupo li { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 12px 4px; border-bottom: 1px dashed #ece7f1; font-size: 1.08rem; }
     .enunciado { flex: 1; min-width: 0; }
+
+    .boton-audio {
+      min-height: auto;
+      padding: 2px 6px;
+      border: 1px solid #d7c8e7;
+      border-radius: 8px;
+      background: #fff;
+      font-size: .95rem;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+
+    .boton-audio:hover { background: #f1eafa; }
 
     .respuesta {
       width: 140px;
@@ -247,7 +261,7 @@
     <a href="https://github.com/marconevi-lab/Educacion-de-ingles/issues/new" target="_blank" rel="noopener" class="logo-github logo-issue" title="Reportar un problema" aria-label="Reportar un problema">🐛</a>
     <span class="etiqueta">🧑‍🏫 Modo docente · 4.º de Primaria</span>
     <h1>Reto de inglés</h1>
-    <p>50 ejercicios para practicar vocabulario, números, el verbo "to be" y los plurales. Elige un nivel y ponte a calcular; las soluciones están reservadas para el profesorado.</p>
+    <p>50 ejercicios para practicar vocabulario, números, el verbo "to be", respuestas cortas y los plurales. Elige un nivel y ponte a calcular; las soluciones están reservadas para el profesorado.</p>
   </header>
 
   <main class="contenedor">
@@ -297,7 +311,8 @@
     const grupos = [
       { id: "vocabulario", titulo: "Vocabulario", icono: "🔤", cantidad: 10 },
       { id: "numeros", titulo: "Números en letras", icono: "🔢", cantidad: 10 },
-      { id: "verboToBe", titulo: 'Verbo "to be"', icono: "💬", cantidad: 20 },
+      { id: "verboToBe", titulo: 'Verbo "to be"', icono: "💬", cantidad: 10 },
+      { id: "preguntasCortas", titulo: "Respuestas cortas", icono: "❓", cantidad: 10 },
       { id: "plurales", titulo: "Plurales", icono: "📚", cantidad: 10 }
     ];
 
@@ -354,6 +369,25 @@
       "funny", "nice", "at home", "in the garden", "ten years old", "from Spain"
     ];
 
+    // Cada fila: [sujeto de la pregunta, pronombre de la respuesta, verbo]
+    const sujetosPreguntasCortas = {
+      facil: [
+        ["you", "you", "are"], ["he", "he", "is"], ["she", "she", "is"],
+        ["it", "it", "is"], ["we", "we", "are"], ["they", "they", "are"]
+      ],
+      medio: [
+        ["you", "you", "are"], ["he", "he", "is"], ["she", "she", "is"],
+        ["it", "it", "is"], ["we", "we", "are"], ["they", "they", "are"],
+        ["Ana", "she", "is"], ["Tom", "he", "is"], ["my mother", "she", "is"], ["my father", "he", "is"]
+      ],
+      dificil: [
+        ["you", "you", "are"], ["he", "he", "is"], ["she", "she", "is"],
+        ["it", "it", "is"], ["we", "we", "are"], ["they", "they", "are"],
+        ["Ana", "she", "is"], ["Tom", "he", "is"], ["Ana and Tom", "they", "are"],
+        ["the students", "they", "are"], ["my parents", "they", "are"], ["the dogs", "they", "are"]
+      ]
+    };
+
     const unidades = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
       "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
     const decenas = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
@@ -397,7 +431,7 @@
     }
 
     function crearEjercicios(nivel) {
-      const ejercicios = { vocabulario: [], numeros: [], verboToBe: [], plurales: [] };
+      const ejercicios = { vocabulario: [], numeros: [], verboToBe: [], preguntasCortas: [], plurales: [] };
 
       for (let i = 0; i < 10; i++) {
         const [espanol, ingles] = elegirAlAzar(vocabularioPorNivel[nivel]);
@@ -405,18 +439,27 @@
 
         const [singular, plural] = elegirAlAzar(pluralesPorNivel[nivel]);
         ejercicios.plurales.push({ texto: `Escribe el plural de "${singular}"`, respuesta: plural });
+
+        const [sujeto, verbo] = elegirAlAzar(sujetosVerboToBe[nivel]);
+        const complemento = elegirAlAzar(complementosVerboToBe);
+        ejercicios.verboToBe.push({ texto: `Completa: "${sujeto} ___ ${complemento}."`, respuesta: verbo });
+
+        const [sujetoPregunta, pronombre, verboPregunta] = elegirAlAzar(sujetosPreguntasCortas[nivel]);
+        const complementoPregunta = elegirAlAzar(complementosVerboToBe);
+        const verboPreguntaMayus = verboPregunta.charAt(0).toUpperCase() + verboPregunta.slice(1);
+        const esAfirmativa = Math.random() < 0.5;
+        const respuestaCorta = esAfirmativa ? verboPregunta : (verboPregunta === "is" ? "isn't" : "aren't");
+        const saludo = esAfirmativa ? "Yes" : "No";
+        ejercicios.preguntasCortas.push({
+          texto: `Responde corto: "${verboPreguntaMayus} ${sujetoPregunta} ${complementoPregunta}?" → "${saludo}, ${pronombre} ___."`,
+          respuesta: respuestaCorta
+        });
       }
 
       const [minNumero, maxNumero] = rangoNumerosPorNivel[nivel];
       for (let i = 0; i < 10; i++) {
         const numero = aleatorio(minNumero, maxNumero);
         ejercicios.numeros.push({ texto: `Escribe en letras: ${numero}`, respuesta: numeroEnPalabras(numero) });
-      }
-
-      for (let i = 0; i < 20; i++) {
-        const [sujeto, verbo] = elegirAlAzar(sujetosVerboToBe[nivel]);
-        const complemento = elegirAlAzar(complementosVerboToBe);
-        ejercicios.verboToBe.push({ texto: `Completa: "${sujeto} ___ ${complemento}."`, respuesta: verbo });
       }
 
       return ejercicios;
@@ -458,7 +501,15 @@
 
         const titulo = document.createElement("h2");
         titulo.innerHTML = `<span aria-hidden="true">${grupo.icono}</span>${grupo.titulo} <small>(${grupo.cantidad})</small>`;
+        const contadorGrupo = document.createElement("span");
+        contadorGrupo.className = "contador-grupo";
+        titulo.append(contadorGrupo);
         seccion.append(titulo);
+
+        function actualizarContadorGrupo() {
+          const correctas = lista.querySelectorAll(".resultado.correcta").length;
+          contadorGrupo.textContent = `${correctas}/${grupo.cantidad} correctas`;
+        }
 
         const lista = document.createElement("ol");
         ejercicios[grupo.id].forEach((ejercicio, indice) => {
@@ -467,6 +518,23 @@
           const enunciado = document.createElement("span");
           enunciado.className = "enunciado";
           enunciado.textContent = ejercicio.texto;
+
+          if (grupo.id === "vocabulario") {
+            const botonAudio = document.createElement("button");
+            botonAudio.type = "button";
+            botonAudio.className = "boton-audio";
+            botonAudio.title = "Escuchar pronunciación";
+            botonAudio.setAttribute("aria-label", "Escuchar pronunciación");
+            botonAudio.textContent = "🔊";
+            botonAudio.addEventListener("click", () => {
+              if (!("speechSynthesis" in window)) return;
+              const utterance = new SpeechSynthesisUtterance(ejercicio.respuesta);
+              utterance.lang = "en-US";
+              window.speechSynthesis.cancel();
+              window.speechSynthesis.speak(utterance);
+            });
+            enunciado.append(" ", botonAudio);
+          }
 
           const entrada = document.createElement("input");
           entrada.className = "respuesta";
@@ -483,17 +551,23 @@
           resultado.setAttribute("role", "status");
           resultado.setAttribute("aria-live", "polite");
 
+          function normalizar(texto) {
+            return texto.trim().toLowerCase().replace(/['’]/g, "");
+          }
+
           function comprobarRespuesta() {
             if (entrada.value.trim() === "") {
               resultado.textContent = "";
               resultado.className = "resultado";
               resultado.removeAttribute("aria-label");
+              actualizarContadorGrupo();
               return;
             }
-            const esCorrecta = entrada.value.trim().toLowerCase() === ejercicio.respuesta.toLowerCase();
+            const esCorrecta = normalizar(entrada.value) === normalizar(ejercicio.respuesta);
             resultado.textContent = esCorrecta ? "✓" : "✗";
             resultado.className = `resultado ${esCorrecta ? "correcta" : "incorrecta"}`;
             resultado.setAttribute("aria-label", esCorrecta ? "Correcto" : "Incorrecto");
+            actualizarContadorGrupo();
           }
 
           entrada.addEventListener("input", () => {
