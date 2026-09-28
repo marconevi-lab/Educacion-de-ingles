@@ -418,7 +418,7 @@
     const pistaClave = document.querySelector("#pista-clave");
     let mostrarSoluciones = false;
     let accesoDocente = false;
-    const CLAVE_PROGRESO = "ingles-progreso-v1";
+    const CLAVE_PROGRESO = "ingles-progreso-v2";
     let ejerciciosActuales = null;
     let respuestasGuardadas = {};
 
@@ -512,7 +512,7 @@
         }
 
         const lista = document.createElement("ol");
-        ejercicios[grupo.id].forEach((ejercicio, indice) => {
+        (ejercicios[grupo.id] || []).forEach((ejercicio, indice) => {
           const idEjercicio = `${grupo.id}-${indice}`;
           const elemento = document.createElement("li");
           const enunciado = document.createElement("span");
