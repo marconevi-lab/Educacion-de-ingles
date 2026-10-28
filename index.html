@@ -5,13 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#51386a">
   <title>Modo docente · Inglés</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontsource-opendyslexic/5.3.0/index.css">
+  <link rel="stylesheet" href="config.css">
   <style>
     :root {
-      color-scheme: light;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: #292431;
-      background: #f7f3fb;
-      font-synthesis: none;
+      --color-controles-bg: #fffffff2;
+      --color-grupo-bg: #fff;
+      --color-grupo-sombra: #39264e0b;
+      --color-grupo-cabecera-bg: #f1eafa;
+      --color-grupo-cabecera-texto: #46315c;
+      --color-contador: #7a6f8a;
+      --color-fila-borde: #ece7f1;
+      --color-respuesta-borde: #d7cfdf;
+      --color-respuesta-bg: #fff;
+      --color-correcta: #168348;
+      --color-incorrecta: #c92b3d;
+      --color-solucion: #21734a;
+      --color-dialogo-borde: #ddd2e8;
+      --color-aviso-guardado: #5b6970;
+      --color-audio-borde: #d7c8e7;
+      --color-audio-bg: #fff;
+    }
+
+    :root[data-theme="dark"] {
+      --color-controles-bg: #2a2234f2;
+      --color-grupo-bg: #2a2234;
+      --color-grupo-sombra: #00000030;
+      --color-grupo-cabecera-bg: #342a40;
+      --color-grupo-cabecera-texto: #d9cce7;
+      --color-contador: #a79bb3;
+      --color-fila-borde: #3a2f47;
+      --color-respuesta-borde: #4d3c5c;
+      --color-respuesta-bg: #221b2c;
+      --color-correcta: #8ee6ad;
+      --color-incorrecta: #f28b9d;
+      --color-solucion: #8ee6ad;
+      --color-dialogo-borde: #40334e;
+      --color-aviso-guardado: #a79bb3;
+      --color-audio-borde: #4d3c5c;
+      --color-audio-bg: #221b2c;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]):not([data-theme="dark"]) {
+        --color-controles-bg: #2a2234f2;
+        --color-grupo-bg: #2a2234;
+        --color-grupo-sombra: #00000030;
+        --color-grupo-cabecera-bg: #342a40;
+        --color-grupo-cabecera-texto: #d9cce7;
+        --color-contador: #a79bb3;
+        --color-fila-borde: #3a2f47;
+        --color-respuesta-borde: #4d3c5c;
+        --color-respuesta-bg: #221b2c;
+        --color-correcta: #8ee6ad;
+        --color-incorrecta: #f28b9d;
+        --color-solucion: #8ee6ad;
+        --color-dialogo-borde: #40334e;
+        --color-aviso-guardado: #a79bb3;
+        --color-audio-borde: #4d3c5c;
+        --color-audio-bg: #221b2c;
+      }
+    }
+
+    :root[data-contraste="alto"] {
+      --color-controles-bg: #fff !important;
+      --color-grupo-bg: #fff !important;
+      --color-grupo-cabecera-bg: #fff !important;
+      --color-grupo-cabecera-texto: #000 !important;
+      --color-contador: #000 !important;
+      --color-fila-borde: #000 !important;
+      --color-respuesta-borde: #000 !important;
+      --color-respuesta-bg: #fff !important;
+      --color-correcta: #006400 !important;
+      --color-incorrecta: #8b0000 !important;
+      --color-solucion: #003d00 !important;
+      --color-dialogo-borde: #000 !important;
+      --color-aviso-guardado: #000 !important;
+      --color-audio-borde: #000 !important;
+      --color-audio-bg: #fff !important;
+    }
+
+    [data-contraste="alto"] .controles,
+    [data-contraste="alto"] .grupo,
+    [data-contraste="alto"] .respuesta,
+    [data-contraste="alto"] .boton-audio,
+    [data-contraste="alto"] select,
+    [data-contraste="alto"] dialog,
+    [data-contraste="alto"] .logo-github {
+      border-width: 2px;
     }
 
     * { box-sizing: border-box; }
@@ -19,9 +100,11 @@
     body {
       margin: 0;
       min-height: 100vh;
+      color: var(--color-texto);
       background:
-        radial-gradient(circle at 8% 6%, #e9dcff 0, transparent 24rem),
-        linear-gradient(180deg, #fbf9ff, #f5f1f9);
+        radial-gradient(circle at 8% 6%, var(--color-fondo-1) 0, transparent 24rem),
+        linear-gradient(180deg, var(--color-fondo-2), var(--color-fondo-3));
+      transition: background .2s ease, color .2s ease;
     }
 
     .contenedor { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
@@ -37,17 +120,17 @@
       justify-content: center;
       width: 48px;
       height: 48px;
-      border: 1px solid #d7c8e7;
+      border: 1px solid var(--color-etiqueta-borde);
       border-radius: 50%;
-      background: #fff;
+      background: var(--color-tarjeta-bg);
       font-size: 1.4rem;
       text-decoration: none;
-      box-shadow: 0 8px 24px #39264e12;
+      box-shadow: 0 8px 24px var(--color-tarjeta-sombra);
       transition: transform .14s ease, background .14s ease;
     }
 
-    .logo-github:hover { transform: translateY(-2px); background: #f1eafa; }
-    .logo-github:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    .logo-github:hover { transform: translateY(-2px); background: var(--color-icono-hover); }
+    .logo-github:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
     .logo-elegir { right: 116px; }
     .logo-issue { right: 58px; }
 
@@ -56,18 +139,18 @@
       align-items: center;
       gap: 8px;
       padding: 7px 12px;
-      border: 1px solid #d7c8e7;
+      border: 1px solid var(--color-etiqueta-borde);
       border-radius: 999px;
-      background: #fff;
-      color: #604777;
+      background: var(--color-tarjeta-bg);
+      color: var(--color-acento);
       font-size: .85rem;
       font-weight: 800;
       letter-spacing: .04em;
       text-transform: uppercase;
     }
 
-    h1 { margin: 16px 0 8px; color: #39264e; font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.05; }
-    header p { max-width: 680px; margin: 0; color: #625b6c; font-size: 1.08rem; line-height: 1.6; }
+    h1 { margin: 16px 0 8px; color: var(--color-titulo); font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.05; }
+    header p { max-width: 680px; margin: 0; color: var(--color-texto-suave); font-size: 1.08rem; line-height: 1.6; }
 
     .controles {
       position: sticky;
@@ -79,25 +162,25 @@
       gap: 12px;
       margin: 4px 0 24px;
       padding: 14px;
-      border: 1px solid #e2d9eb;
+      border: 1px solid var(--color-tarjeta-borde);
       border-radius: 18px;
-      background: #fffffff2;
-      box-shadow: 0 8px 24px #39264e12;
+      background: var(--color-controles-bg);
+      box-shadow: 0 8px 24px var(--color-tarjeta-sombra);
       backdrop-filter: blur(10px);
     }
 
     .selector { display: grid; gap: 5px; min-width: 190px; }
-    label { color: #51495d; font-size: .9rem; font-weight: 750; }
+    label { color: var(--color-label); font-size: .9rem; font-weight: 750; }
 
     select, button, input { font: inherit; }
 
     select {
       min-height: 44px;
       padding: 9px 38px 9px 12px;
-      border: 1px solid #cfc4da;
+      border: 1px solid var(--color-input-borde);
       border-radius: 11px;
-      background: white;
-      color: #302a38;
+      background: var(--color-input-bg);
+      color: var(--color-input-texto);
     }
 
     button {
@@ -105,36 +188,36 @@
       padding: 10px 16px;
       border: 0;
       border-radius: 11px;
-      background: #604777;
+      background: var(--color-acento);
       color: white;
       font-weight: 800;
       cursor: pointer;
       transition: transform .14s ease, background .14s ease;
     }
 
-    button:hover { transform: translateY(-1px); background: #4c3562; }
-    button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    button:hover { transform: translateY(-1px); background: var(--color-acento-hover); }
+    button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 
     .resumen {
       margin-left: auto;
       align-self: center;
-      color: #625b6c;
+      color: var(--color-texto-suave);
       font-size: .95rem;
       font-weight: 700;
     }
 
     .continuar { background: #23745a; }
     .continuar:hover { background: #195b45; }
-    .aviso-guardado { width: 100%; margin: 0; color: #5b6970; font-size: .84rem; font-weight: 650; }
+    .aviso-guardado { width: 100%; margin: 0; color: var(--color-aviso-guardado); font-size: .84rem; font-weight: 650; }
 
     #ejercicios { display: grid; gap: 20px; padding-bottom: 48px; }
 
     .grupo {
       overflow: hidden;
-      border: 1px solid #e5ddec;
+      border: 1px solid var(--color-fila-borde);
       border-radius: 20px;
-      background: #fff;
-      box-shadow: 0 8px 24px #39264e0b;
+      background: var(--color-grupo-bg);
+      box-shadow: 0 8px 24px var(--color-grupo-sombra);
     }
 
     .grupo h2 {
@@ -143,74 +226,90 @@
       gap: 10px;
       margin: 0;
       padding: 17px 20px;
-      background: #f1eafa;
-      color: #46315c;
+      background: var(--color-grupo-cabecera-bg);
+      color: var(--color-grupo-cabecera-texto);
       font-size: 1.25rem;
     }
 
     .grupo h2 span { font-size: 1.35rem; }
-    .contador-grupo { margin-left: auto; color: #7a6f8a; font-size: .82rem; font-weight: 700; text-transform: none; letter-spacing: normal; }
+    .contador-grupo { margin-left: auto; color: var(--color-contador); font-size: .82rem; font-weight: 700; text-transform: none; letter-spacing: normal; }
     .grupo ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 26px; margin: 0; padding: 8px 24px 18px 52px; }
-    .grupo li { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 12px 4px; border-bottom: 1px dashed #ece7f1; font-size: 1.08rem; }
+    .grupo li { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 12px 4px; border-bottom: 1px dashed var(--color-fila-borde); font-size: 1.08rem; }
     .enunciado { flex: 1; min-width: 0; }
 
     .boton-audio {
       min-height: auto;
       padding: 2px 6px;
-      border: 1px solid #d7c8e7;
+      border: 1px solid var(--color-audio-borde);
       border-radius: 8px;
-      background: #fff;
+      background: var(--color-audio-bg);
       font-size: .95rem;
       line-height: 1.4;
       cursor: pointer;
     }
 
-    .boton-audio:hover { background: #f1eafa; }
+    .boton-audio:hover { background: var(--color-icono-hover); }
 
     .respuesta {
       width: 140px;
       min-height: 40px;
       padding: 6px 8px;
-      border: 2px solid #d7cfdf;
+      border: 2px solid var(--color-respuesta-borde);
       border-radius: 9px;
-      background: #fff;
-      color: #292431;
+      background: var(--color-respuesta-bg);
+      color: var(--color-texto);
       font: inherit;
       text-align: center;
     }
 
-    .respuesta:focus { border-color: #80619c; outline: 3px solid #aa8ac833; }
+    .respuesta:focus { border-color: var(--color-acento); outline: 3px solid var(--color-focus); }
     .resultado { min-width: 1.2em; font-size: 1.35rem; font-weight: 900; line-height: 1; }
-    .resultado.correcta { color: #168348; }
-    .resultado.incorrecta { color: #c92b3d; }
+    .resultado.correcta { color: var(--color-correcta); }
+    .resultado.incorrecta { color: var(--color-incorrecta); }
 
     .solucion {
       display: inline-block;
       margin-left: 8px;
-      color: #21734a;
+      color: var(--color-solucion);
       font-weight: 850;
     }
 
     .solucion[hidden] { display: none; }
 
+    .boton-solucion {
+      min-height: auto;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 0;
+      background: #ffd60a;
+      color: #3a2f00;
+      font-size: .82rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .14s ease, background .14s ease;
+    }
+    .boton-solucion:hover { background: #ffe066; transform: translateY(-1px); }
+
     dialog {
       width: min(420px, calc(100% - 28px));
       padding: 0;
-      border: 1px solid #ddd2e8;
+      border: 1px solid var(--color-dialogo-borde);
       border-radius: 20px;
+      background: var(--color-tarjeta-bg);
+      color: var(--color-texto);
       box-shadow: 0 24px 80px #20172b55;
     }
 
     dialog::backdrop { background: #25183188; backdrop-filter: blur(3px); }
     .dialogo-cuerpo { padding: 24px; }
-    .dialogo-cuerpo h2 { margin: 0 0 7px; color: #39264e; }
-    .dialogo-cuerpo p { margin: 0 0 18px; color: #625b6c; line-height: 1.5; }
+    .dialogo-cuerpo h2 { margin: 0 0 7px; color: var(--color-titulo); }
+    .dialogo-cuerpo p { margin: 0 0 18px; color: var(--color-texto-suave); line-height: 1.5; }
     .dialogo-cuerpo form { display: grid; gap: 12px; }
-    .dialogo-cuerpo input { min-height: 45px; padding: 10px 12px; border: 1px solid #cfc4da; border-radius: 10px; }
+    .dialogo-cuerpo input { min-height: 45px; padding: 10px 12px; border: 1px solid var(--color-input-borde); border-radius: 10px; background: var(--color-input-bg); color: var(--color-input-texto); }
     .acciones-dialogo { display: flex; justify-content: end; gap: 8px; }
-    .secundario { background: #eee8f4; color: #40334e; }
-    .secundario:hover { background: #e2d8ec; }
-    #error-clave { min-height: 1.4em; margin: 0; color: #a32939; font-weight: 700; }
+    .secundario { background: var(--color-boton-secundario-bg); color: var(--color-boton-secundario-texto); }
+    .secundario:hover { background: var(--color-boton-secundario-hover); }
+    #error-clave { min-height: 1.4em; margin: 0; color: var(--color-error); font-weight: 700; }
 
     .enlace-pista {
       justify-self: start;
@@ -218,18 +317,18 @@
       padding: 2px 0;
       border: 0;
       background: none;
-      color: #604777;
+      color: var(--color-acento);
       font-size: .85rem;
       font-weight: 700;
       text-decoration: underline;
       cursor: pointer;
     }
 
-    .enlace-pista:hover { color: #4c3562; }
-    .pista-clave { margin: -6px 0 0; color: #51495d; font-size: .85rem; line-height: 1.4; }
+    .enlace-pista:hover { color: var(--color-acento-hover); }
+    .pista-clave { margin: -6px 0 0; color: var(--color-label); font-size: .85rem; line-height: 1.4; }
     .pista-clave[hidden] { display: none; }
 
-    footer { padding: 0 0 28px; color: #756d7e; font-size: .88rem; text-align: center; }
+    footer { padding: 0 0 28px; color: var(--color-texto-suave); font-size: .88rem; text-align: center; }
 
     @media (max-width: 620px) {
       .controles { position: static; align-items: stretch; }
@@ -243,7 +342,7 @@
       body { background: white; }
       .contenedor { width: 100%; }
       header { padding: 0 0 14px; }
-      .controles, dialog, footer, .logo-github, .logo-elegir, .logo-issue { display: none !important; }
+      .controles, dialog, footer, .logo-github, .logo-elegir, .logo-issue, .logo-config, .panel-config { display: none !important; }
       .grupo { break-inside: avoid; box-shadow: none; }
       .grupo ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .solucion[hidden] { display: none !important; }
@@ -255,6 +354,50 @@
   </style>
 </head>
 <body>
+  <button type="button" class="logo-config" id="boton-config" title="Configuración" aria-label="Configuración">⚙️</button>
+
+  <div class="panel-config" id="panel-config" hidden>
+    <h2>⚙️ Configuración</h2>
+    <div class="campo">
+      <label for="select-tema">Tema</label>
+      <select id="select-tema">
+        <option value="auto">Automático</option>
+        <option value="light">Claro</option>
+        <option value="dark">Oscuro</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-tamano">Tamaño de texto</label>
+      <select id="select-tamano">
+        <option value="normal">Normal</option>
+        <option value="grande">Grande</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-contraste">Contraste</label>
+      <select id="select-contraste">
+        <option value="normal">Normal</option>
+        <option value="alto">Alto contraste</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-fuente">Fuente</label>
+      <select id="select-fuente">
+        <option value="normal">Normal</option>
+        <option value="dislexia">Apta para dislexia</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-movimiento">Animaciones</label>
+      <select id="select-movimiento">
+        <option value="normal">Activadas</option>
+        <option value="reducido">Reducidas</option>
+      </select>
+    </div>
+    <button type="button" id="boton-restablecer" class="secundario" style="width: 100%;">🔄 Restablecer progreso</button>
+    <button type="button" id="boton-version-especial" class="secundario" style="width: 100%; margin-top: 10px;">🌟 Acceder a la versión especial</button>
+  </div>
+
   <header class="contenedor">
     <a href="https://marconevi-lab.github.io/Educacion-de-matematicas/inicio.html" class="logo-github logo-elegir" title="Elegir otra asignatura o curso" aria-label="Elegir otra asignatura o curso">➕</a>
     <a href="https://github.com/marconevi-lab/Educacion-de-ingles" target="_blank" rel="noopener" class="logo-github" title="Ver el repositorio en GitHub" aria-label="Ver el repositorio en GitHub">📐</a>
@@ -422,6 +565,22 @@
     let ejerciciosActuales = null;
     let respuestasGuardadas = {};
 
+    const CLAVE_CONFIG_COMPARTIDA = "edu-config-inicio";
+
+    function leerConfigCompartida() {
+      try {
+        const guardado = JSON.parse(localStorage.getItem(CLAVE_CONFIG_COMPARTIDA));
+        if (guardado && typeof guardado === "object") return guardado;
+      } catch {}
+      return { tema: "auto", tamano: "normal", contraste: "normal", fuente: "normal", movimiento: "normal" };
+    }
+
+    function guardarConfigCompartida(config) {
+      localStorage.setItem(CLAVE_CONFIG_COMPARTIDA, JSON.stringify(config));
+    }
+
+    const modoEspecial = leerConfigCompartida().correccion === "especial";
+
     function aleatorio(minimo, maximo) {
       return Math.floor(Math.random() * (maximo - minimo + 1)) + minimo;
     }
@@ -552,7 +711,19 @@
           resultado.setAttribute("aria-live", "polite");
 
           function normalizar(texto) {
-            return texto.trim().toLowerCase().replace(/['’]/g, "");
+            return texto.trim().toLowerCase().replace(/['’]/g, "").replace(/-/g, " ").replace(/\s+/g, " ");
+          }
+
+          let botonMostrarSolucion = null;
+          let solucionMostrada = false;
+
+          function ocultarResultado() {
+            resultado.textContent = "";
+            resultado.className = "resultado";
+            resultado.removeAttribute("aria-label");
+            solucionMostrada = false;
+            if (botonMostrarSolucion) botonMostrarSolucion.textContent = "Mostrar solución";
+            actualizarContadorGrupo();
           }
 
           function comprobarRespuesta() {
@@ -573,11 +744,15 @@
           entrada.addEventListener("input", () => {
             respuestasGuardadas[idEjercicio] = entrada.value;
             guardarProgreso();
-            comprobarRespuesta();
+            if (modoEspecial) {
+              ocultarResultado();
+            } else {
+              comprobarRespuesta();
+            }
           });
 
           entrada.addEventListener("change", () => {
-            comprobarRespuesta();
+            if (!modoEspecial) comprobarRespuesta();
           });
 
           entrada.addEventListener("keydown", (evento) => {
@@ -587,15 +762,35 @@
             }
           });
 
+          if (modoEspecial) {
+            botonMostrarSolucion = document.createElement("button");
+            botonMostrarSolucion.type = "button";
+            botonMostrarSolucion.className = "boton-solucion";
+            botonMostrarSolucion.textContent = "Mostrar solución";
+            botonMostrarSolucion.addEventListener("click", () => {
+              if (solucionMostrada) {
+                ocultarResultado();
+              } else {
+                comprobarRespuesta();
+                solucionMostrada = true;
+                botonMostrarSolucion.textContent = "Ocultar solución";
+              }
+            });
+          }
+
           const solucion = document.createElement("span");
           solucion.className = "solucion";
           solucion.textContent = ejercicio.respuesta;
           solucion.hidden = !mostrarSoluciones;
           solucion.setAttribute("aria-label", `respuesta del ejercicio ${numero}`);
 
-          elemento.append(enunciado, entrada, resultado, solucion);
+          const hijos = [enunciado, entrada];
+          if (botonMostrarSolucion) hijos.push(botonMostrarSolucion);
+          hijos.push(resultado, solucion);
+          elemento.append(...hijos);
           lista.append(elemento);
-          comprobarRespuesta();
+          if (modoEspecial) actualizarContadorGrupo();
+          else comprobarRespuesta();
           numero++;
         });
 
@@ -694,6 +889,20 @@
       respuestasGuardadas = progresoInicial.respuestas;
     }
     pintarEjercicios();
+
+    const botonVersionEspecial = document.querySelector("#boton-version-especial");
+    if (botonVersionEspecial) {
+      botonVersionEspecial.textContent = modoEspecial
+        ? "🌟 Salir de la versión especial"
+        : "🌟 Acceder a la versión especial";
+      botonVersionEspecial.addEventListener("click", () => {
+        const config = leerConfigCompartida();
+        config.correccion = modoEspecial ? "auto" : "especial";
+        guardarConfigCompartida(config);
+        location.reload();
+      });
+    }
   </script>
+  <script src="config.js"></script>
 </body>
 </html>
